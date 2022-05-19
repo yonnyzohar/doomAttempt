@@ -112,6 +112,7 @@
 				//this is for updating position, rotation and scale
 				go.update(elapsedTime);
 				go.rendered = false;
+				//is the game object in front of the camera?
 				if(go.isObjectInView(activeCamera))
 				{
 
@@ -122,19 +123,16 @@
 						polygons[j].calculateWorldPos(go.rotation, go.position);
 						polygons[j].calculateCameraView(activeCamera);
 						totalPolygonsPreClip.push(polygons[j]);
-
 					}
 				}
-				
-
-				
 			}
 		
 
 			//sorting by average z will solve most z index issues but not all
 			totalPolygonsPreClip.sortOn("averageZ", Array.NUMERIC | Array.DESCENDING);//, 
 
-			var totalPolygons: Array = [];
+			var totalPolygons: Array = totalPolygonsPreClip;
+			/*
 			for (var j: int = 0; j < totalPolygonsPreClip.length; j++) {
 				var polygon: Polygon = totalPolygonsPreClip[j];
 				
@@ -144,7 +142,8 @@
 					totalPolygons.push(clippedTriangles[h]);
 				}
 			}
-			
+			*/
+
 
 			//we still need to render only the polygons facing us
 			//we created the polygon indices in clockwise order sow we can check who is facing us and who is not
@@ -168,6 +167,7 @@
 			
 
 			lateUpdate();
+			trace("");
 
 			Engine.bd.unlock();
 			prevTime = currTime;

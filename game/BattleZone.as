@@ -29,8 +29,8 @@ var rotation = new Point3d(0, 0, 0);
 var scale = new Point3d(1, 1, 1);
 var f = new Wall(position, rotation, scale, arr[0],
 [new Polygon(new Point3d(-71 , 0 , -94 , 0, 0),
-new Point3d(-71 , -200 , -94 , 0, 0),
-new Point3d(71 , -200 , 94 , 0, 0),
+new Point3d(-71 , -500 , -94 , 0, 0),
+new Point3d(71 , -500 , 94 , 0, 0),
 new Point3d(71 , 0 , 94 , 0, 0),arr[0])]);
 gameObjects.push(f);
 
@@ -39,8 +39,8 @@ var rotation = new Point3d(0, 0, 0);
 var scale = new Point3d(1, 1, 1);
 var f = new Wall(position, rotation, scale, arr[0],
 [new Polygon(new Point3d(-88 , 0 , 77 , 0, 0),
-new Point3d(-88 , -200 , 77 , 0, 0),
-new Point3d(88 , -200 , -77 , 0, 0),
+new Point3d(-88 , -500 , 77 , 0, 0),
+new Point3d(88 , -500 , -77 , 0, 0),
 new Point3d(88 , 0 , -77 , 0, 0),arr[0])]);
 gameObjects.push(f);
 
@@ -49,8 +49,8 @@ var rotation = new Point3d(0, 0, 0);
 var scale = new Point3d(1, 1, 1);
 var f = new Wall(position, rotation, scale, arr[0],
 [new Polygon(new Point3d(-200 , 0 , -167 , 0, 0),
-new Point3d(-200 , -200 , -167 , 0, 0),
-new Point3d(200 , -200 , 167 , 0, 0),
+new Point3d(-200 , -500 , -167 , 0, 0),
+new Point3d(200 , -500 , 167 , 0, 0),
 new Point3d(200 , 0 , 167 , 0, 0),arr[0])]);
 gameObjects.push(f);
 
@@ -59,8 +59,8 @@ var rotation = new Point3d(0, 0, 0);
 var scale = new Point3d(1, 1, 1);
 var f = new Wall(position, rotation, scale, arr[0],
 [new Polygon(new Point3d(-88 , 0 , 77 , 0, 0),
-new Point3d(-88 , -200 , 77 , 0, 0),
-new Point3d(88 , -200 , -77 , 0, 0),
+new Point3d(-88 , -500 , 77 , 0, 0),
+new Point3d(88 , -500 , -77 , 0, 0),
 new Point3d(88 , 0 , -77 , 0, 0),arr[0])]);
 gameObjects.push(f);
 

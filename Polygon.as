@@ -9,14 +9,19 @@
 		private var cameraPositions: Array; //view -> the points in relation to the camera position
 		private var screenPositions: Array; //projection - > the 3d points projected to a 2d x,y screen
 
-		private var p1: Point3d;
-		private var p2: Point3d;
-		private var p3: Point3d;
-		private var p4: Point3d;
+		public var p1: Point3d;
+		public var p2: Point3d;
+		public var p3: Point3d;
+		public var p4: Point3d;
 		private var bd: BitmapData;
 		public var averageZ: Number;
 		public var normalZ: Number;
 		private var wireFrameColor:uint;
+		public var numTexturesW:Number;
+		public var numTexturesH:Number;
+
+		
+		
 
 		public function Polygon(_p1: Point3d, _p2: Point3d, _p3: Point3d, _p4: Point3d,_bd: BitmapData, _wireFrameColor:uint = 0xffffff) 
 		{
@@ -24,12 +29,17 @@
 			p2 = _p2;
 			p3 = _p3;
 			p4 = _p4;
-			localPositions = [p1, p2, p3,p4];
-			worldPositions = [p1, p2, p3,p4];
+			localPositions  = [p1, p2, p3,p4];
+			worldPositions  = [p1, p2, p3,p4];
 			screenPositions = [p1, p2, p3,p4];
 			cameraPositions = [p1, p2, p3,p4];
 			bd = _bd;
 			wireFrameColor = _wireFrameColor;
+
+			
+
+			
+			//trace("length",length);
 		}
 
 		public function setFrameColor(color:uint):void
@@ -123,19 +133,19 @@
 
 		private function getWorldTranslation(p: Point3d, _rotation: Point3d, _position: Point3d): Point3d {
 
-			var tempPos: Point3d = new Point3d(p.x, p.y, p.z, p.u, p.v);
+			var tempPos: Point3d = p.duplicate();
 			tempPos.w = p.w;
 			//rotation
-			var p: Point3d = Engine.rotate(p, _rotation);
-			p.u = tempPos.u;
-			p.v = tempPos.v;
-			p.w = tempPos.w;
+			var _p: Point3d = Engine.rotate(tempPos, _rotation);
+			_p.u = tempPos.u;
+			_p.v = tempPos.v;
+			_p.w = tempPos.w;
 
 			// translate
-			p = Engine.translate(p, _position);
+			_p = Engine.translate(_p, _position);
 
 
-			return p;
+			return _p;
 		}
 
 
@@ -188,6 +198,9 @@
 		//y is like in 2d!!! positive under ground, negative above
 		private function fillPolygon():void
 		{
+
+
+
 			//bottom left
 			var btmLeft:Point3d = screenPositions[0];
 			//top left
@@ -199,10 +212,10 @@
 			//bottom right
 			var btmRight:Point3d = screenPositions[3];
 			
-
 			var texW: Number = bd.width;
 			var texH: Number = bd.height;
 			var polyWidth:Number = topRight.x - topLeft.x;
+			var mockTexW:Number = polyWidth / numTexturesW;
 			var leftHeight:Number = Math.abs(btmLeft.y - topLeft.y);
 			var rightHeight:Number = Math.abs(btmRight.y - topRight.y);
 			var heightDiff:Number = (rightHeight - leftHeight);
@@ -230,7 +243,10 @@
 			for(var i:Number = 0; i < polyWidth; i++)
 			{
 				var colPer:Number = i / polyWidth;
-				var pixelCol:int = colPer * texW;
+				var colInMockTexture:Number = i % mockTexW;
+
+				var colPerInTexture:Number = colInMockTexture / mockTexW;
+				var pixelCol:int = colPerInTexture * texW;
 
 				var h:Number = (heightDiff * colPer) + smallHeight;
 				if(!rightIsBigger)
@@ -243,11 +259,16 @@
 				{
 					startY = topLeft.y + (topDiff * colPer);
 				}
+
+				var mockTexH:Number = h / numTexturesH;
 				//trace(startY);
 				for(var j:Number = 0; j < h; j++)
 				{
 					var rowPer:Number = j / h;
-					var pixelRow:int = rowPer * texH;
+					var rowInMockTexture:Number = (j % mockTexH);//
+					var rowPerInTexture:Number = rowInMockTexture / mockTexH;
+
+					var pixelRow:int =  texH * rowPerInTexture;
 					var pixel: uint = bd.getPixel(pixelCol, pixelRow); //Engine.getPixelFromTexture(bd, u/w, v/w);
 
 					var _x:int = i + topLeft.x;
@@ -478,7 +499,10 @@
 		//a seperate function will handle polygons that are "behind us"
 		public function getClippedTriangles(): Array {
 			var toReturn: Array = [];
-			toReturn.push(new Polygon(screenPositions[0], screenPositions[1], screenPositions[2], screenPositions[3], bd, wireFrameColor));
+			var p:Polygon = new Polygon(screenPositions[0], screenPositions[1], screenPositions[2], screenPositions[3], bd, wireFrameColor);
+			p.numTexturesW = numTexturesW;
+			p.numTexturesH = numTexturesH;
+			toReturn.push(p);
 			
 			/*
 			var noTriangles: int;
@@ -770,7 +794,10 @@
 		//checks if triangles are partially inside the frusom or if they are behind me. in that case we need to clip them (dont need to render what is behind me)
 		public function getZClippedTriangles(): Array {
 			var toReturn: Array = [];
-			toReturn.push(new Polygon(cameraPositions[0], cameraPositions[1], cameraPositions[2], cameraPositions[3], bd,wireFrameColor));
+			var p:Polygon = new Polygon(cameraPositions[0], cameraPositions[1], cameraPositions[2], cameraPositions[3], bd,wireFrameColor);
+			p.numTexturesW = numTexturesW;
+			p.numTexturesH = numTexturesH;
+			toReturn.push(p);
 			/*
 			var noTriangles: int;
 			var insidePoints: Array = []; // array of points3d

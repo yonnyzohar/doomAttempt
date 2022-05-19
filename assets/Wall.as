@@ -5,6 +5,8 @@
 	public class Wall extends GameObject {
 
 		var n:int = 0;
+		private var numTexturesW:Number;
+		private var numTexturesH:Number;
 
 		public function Wall(_positon: Point3d, _rotation: Point3d, _scale: Point3d, _bd: BitmapData, _polygons:Array) 
 		{
@@ -13,11 +15,18 @@
 			rotation = _rotation; //;
 			scale = _scale;
 			bd = _bd;
+			polygons = _polygons;
+			var poly:Polygon = polygons[0];
+			numTexturesW = Math.abs(EngineMath.getDistance(poly.p1, poly.p4)) / 50;
+			numTexturesH = Math.abs(EngineMath.getDistance(poly.p1, poly.p2)) / 50;
+			poly.numTexturesW = numTexturesW;
+			poly.numTexturesH = numTexturesH;
+			
 		
 			
 			//the makeup of the polygons is important. they need to be clockwise, otherwise we don't know if the polygon is facing us or not!
 			
-			polygons = _polygons;
+			
 /*
 			[
 			

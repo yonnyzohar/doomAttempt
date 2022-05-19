@@ -12,6 +12,11 @@
 			v = _v;
 		}
 
+		public function duplicate():Point3d
+		{
+			return new Point3d(x,y,z,u,v);
+		}
+
 	}
 	
 }
