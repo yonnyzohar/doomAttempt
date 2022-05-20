@@ -19,6 +19,7 @@ package {
 		public static var FORWARD: Vector3 = new Vector3(0, 0, 1);
 		public static var BACK: Vector3 = new Vector3(0, 0, -1);
 		public static var MATH_DEG_TO_RAD: Number = 0.0174532925;
+		public static var TWO_PI:Number = Math.PI * 2;
 
 		
 		public static function getAngleEuler(from: Vector3, to: Vector3): Number {
@@ -76,6 +77,18 @@ package {
 			var dZ: Number = p1.z - p2.z;
 			var dist: Number = Math.sqrt((dX * dX) + (dY * dY) + (dZ * dZ));
 			return dist;
+		}
+		public static function fixRadians(rad:Number):Number
+		{
+			if(rad > TWO_PI)
+			{
+				rad = rad - TWO_PI;
+			}
+			if(rad < 0)
+			{
+				rad = TWO_PI + rad;
+			}
+			return rad;
 		}
 
 

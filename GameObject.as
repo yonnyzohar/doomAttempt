@@ -127,16 +127,18 @@
 
 			// Translate
 			var cameraPos: Point3d = camera.getPosition();
+			//trace(cameraPos.x, cameraPos.y, cameraPos.z);
 			var translateBy: Point3d = new Point3d(-cameraPos.x, -cameraPos.y, -cameraPos.z);
-			cameraPos = Engine.translate(worldPos, translateBy);
+			var translatedWorld:Point3d = Engine.translate(worldPos, translateBy);
 			
 			// Rotate
 			var cameraRot: Point3d = camera.getRotation();
 			var rotateBy: Point3d = new Point3d(-cameraRot.x, -cameraRot.y, -cameraRot.z);
-			var camPos: Point3d = new Point3d(cameraPos.x, cameraPos.y, cameraPos.z, cameraPos.u, cameraPos.v);
-			cameraPos = Engine.rotate(cameraPos, rotateBy);
+			var rotatedWorld: Point3d = Engine.rotate(translatedWorld, rotateBy);
+
+			//trace(rotatedWorld.z);
 	
-			if(cameraPos.z < 0)
+			if(rotatedWorld.z < 0)
 			{
 				return false;
 			}	
@@ -146,7 +148,7 @@
 
 		private function getWorldTranslation(p: Point3d, _rotation: Point3d, _position: Point3d): Point3d {
 
-			var tempPos: Point3d = new Point3d(p.x, p.y, p.z, p.u, p.v);
+			var tempPos: Point3d = p.duplicate();
 			tempPos.w = p.w;
 			//rotation
 			var p: Point3d = Engine.rotate(p, _rotation);

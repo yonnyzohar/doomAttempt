@@ -23,8 +23,7 @@
 
 			var arr: Array = [new Img0(), new Img1(), new Img2(), new Img3(), new Img4, new Img5()];
 
-/**/
-			var position: Point3d = new Point3d(156, 0, -319);
+var position: Point3d = new Point3d(156, 0, -319);
 var rotation = new Point3d(0, 0, 0);
 var scale = new Point3d(1, 1, 1);
 var f = new Wall(position, rotation, scale, arr[0],
@@ -64,9 +63,33 @@ new Point3d(88 , -500 , -77 , 0, 0),
 new Point3d(88 , 0 , -77 , 0, 0),arr[0])]);
 gameObjects.push(f);
 
+var position: Point3d = new Point3d(1070, 0, -532);
+var rotation = new Point3d(0, 0, 0);
+var scale = new Point3d(1, 1, 1);
+var f = new Wall(position, rotation, scale, arr[0],
+[new Polygon(new Point3d(76 , 0 , -327 , 0, 0),
+new Point3d(76 , -500 , -327 , 0, 0),
+new Point3d(-78 , -500 , 331 , 0, 0),
+new Point3d(-78 , 0 , 331 , 0, 0),arr[0])]);
+gameObjects.push(f);
+
+var position: Point3d = new Point3d(318, 0, -778);
+var rotation = new Point3d(0, 0, 0);
+var scale = new Point3d(1, 1, 1);
+var f = new Wall(position, rotation, scale, arr[0],
+[new Polygon(new Point3d(-230 , 0 , 360 , 0, 0),
+new Point3d(-230 , -500 , 360 , 0, 0),
+new Point3d(240 , -500 , -370 , 0, 0),
+new Point3d(240 , 0 , -370 , 0, 0),arr[0])]);
+gameObjects.push(f);
+
+
+
+
+
 			initialCamPosZ = 0;
 			initialCamPosX = 500;
-			initialCamPosY = -50;
+			initialCamPosY = -100;
 
 		}
 

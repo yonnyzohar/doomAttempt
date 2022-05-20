@@ -199,8 +199,6 @@
 		private function fillPolygon():void
 		{
 
-
-
 			//bottom left
 			var btmLeft:Point3d = screenPositions[0];
 			//top left
@@ -214,7 +212,25 @@
 			
 			var texW: Number = bd.width;
 			var texH: Number = bd.height;
-			var polyWidth:Number = topRight.x - topLeft.x;
+			
+
+			if(topRight.x - topLeft.x < 0)
+			{
+				//bottom left
+				btmLeft = screenPositions[3];
+				//top left
+				topLeft = screenPositions[2];
+				
+				//top right
+				topRight = screenPositions[1];
+
+				//bottom right
+				btmRight = screenPositions[0];
+			}
+
+			var polyWidth:Number = Math.abs(topRight.x - topLeft.x);
+
+
 			var mockTexW:Number = polyWidth / numTexturesW;
 			var leftHeight:Number = Math.abs(btmLeft.y - topLeft.y);
 			var rightHeight:Number = Math.abs(btmRight.y - topRight.y);

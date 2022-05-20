@@ -20,8 +20,7 @@
 		private var theStage: Stage;
 
 		public var zNear;
-		public var zFar = 10000;
-		private var fieldOfView: Number = 30;
+		private var fieldOfView: Number = 45;
 
 		public var aspectRatio:Number ;
 		public var fovY:Number;
@@ -44,9 +43,10 @@
 			fovY = 2 * Math.atan(Math.tan(EngineMath.degreesToRad(fieldOfView) / 2.0) * oneDivAspectRatio);
 
 			
-			positionMinusZ = new Point3d(position.x, position.y, position.z-zNear);
-			position.z += zNear;
-			positionMinusZ.z += zNear;
+			positionMinusZ = new Point3d(position.x, position.y, position.z-(zNear));//
+
+			//position.z += zNear;
+			//positionMinusZ.z += zNear;
 
 		}
 	
@@ -54,75 +54,14 @@
 
 
 		public function getPosition(): Point3d {
-			return positionMinusZ;//MinusZ
+			return position;//MinusZ;
 		}
 
 		public function getRotation(): Point3d {
 			return rotation;
 		}
 
-		private function collidingPlus(dir:Vector3, ms:Number):Boolean
-		{
-			var isColission:Boolean = false;
-			var p:Point3d = new Point3d(positionMinusZ.x + (dir.x *ms), positionMinusZ.y + (dir.y *ms), positionMinusZ.z + (dir.z *ms)  );
-
-			outer : for(var i:int = 0; i < Engine.gO.length; i++)
-			{
-				var go:GameObject = Engine.gO[i];
-				var boundingBox:Object = go.boundingBox;
-				if(boundingBox)
-				{
-					for(var k:String in boundingBox)
-					{
-						if(boundingBox[k] is Point3d)
-						{
-							var edgeVertex:Point3d = boundingBox[k];
-							isColission = go.checkColission(Engine.translate(edgeVertex, p));
-							if(isColission)
-							{
-								break outer;
-							}
-						}
-					}
-				}
-			}
-			return isColission;
-			
-		}
-
-		private function collidingMinus(dir:Vector3, ms:Number):Boolean
-		{
-			var isColission:Boolean = false;
-			var mpZ:Point3d = new Point3d(positionMinusZ.x - (dir.x *ms), positionMinusZ.y - (dir.y *ms), positionMinusZ.z - (dir.z *ms)  );
-
-			outer : for(var i:int = 0; i < Engine.gO.length; i++)
-			{
-				var go:GameObject = Engine.gO[i];
-				var boundingBox:Object = go.boundingBox;
-				if(boundingBox)
-				{
-					for(var k:String in boundingBox)
-					{
-						if(boundingBox[k] is Point3d)
-						{
-							var edgeVertex:Point3d = boundingBox[k];
-							isColission = go.checkColission(Engine.translate(edgeVertex, mpZ));
-							if(isColission)
-							{
-								//go.setFrameColor(Math.random() * 0xffffff);
-								break outer;
-							}
-							
-						}
-					}
-				}
-				
-				
-			}
-			return isColission;
-			
-		}
-
+		
 		
 
 		public function update(elapsedTime:Number): void {
@@ -203,9 +142,10 @@
 				position.z -= deltaZ;
 				position.x += deltaX;
 				
-				positionMinusZ.x += deltaX;
-				positionMinusZ.z -= deltaZ;
 				
+				positionMinusZ.z -= deltaZ;
+				positionMinusZ.x += deltaX;
+
 				/*
 				var deltaX:Number = (ms/2) - ms * (rotation.y * rotation.y + rotation.z * rotation.z);
 				var deltaY:Number = ms * (rotation.x * rotation.y + rotation.w * rotation.z);
@@ -266,10 +206,7 @@
 			if (InputHandler.left) {
 				rotation.y -= .1;
 			}
-
-
-
-
+			rotation.y = EngineMath.fixRadians(rotation.y);
 		}
 
 		public function lookDown(rs:Number):void
